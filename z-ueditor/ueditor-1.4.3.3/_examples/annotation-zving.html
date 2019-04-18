@@ -1,0 +1,113 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <title>ueditor demo</title>
+    <link rel="stylesheet" href="annotation-zving/bootstrap.css">
+    <link rel="stylesheet" href="annotation-zving/annotation.css">
+    <style>
+      /*  #container{
+            width:800px;
+        }*/
+    </style>
+</head>
+<body>
+
+<!-- 加载编辑器的容器 -->
+<section class="container section-box">
+    <div class="row">
+        <!-- 正文main -->
+        <script id="container" class="main-box col-xs-8 box-shadow-gray bg-gray min-height800"></script>
+        <!-- 右标注 -->
+        <aside class="right-aside col-xs-3 ">
+            <!-- 公共输入框-->
+            <div class="com-add-to-comment clearfix none ">
+                    <textarea class="com-add-textarea" name="1" id="1" cols="20" rows="2" placeholder="添加批注"></textarea>
+                    <div class="com-comfirm-or-cancel none">
+                        <button class="com-cancel">取消</button>
+                        <button class="com-comfirm">确认</button>
+                    </div>
+
+            </div>
+            <!-- 标注box:总 -->
+            <ol class="all-lists">
+
+            </ol>
+        </aside>
+    </div>
+</section>
+
+
+</body>
+<script src="annotation-zving/jquery-3.3.1.min.js"></script>
+
+<!-- 配置文件、编辑器源码文件 -->
+<script type="text/javascript" src="../ueditor.config.js"></script>
+<script type="text/javascript" src="editor_api.js"></script>
+<!-- 配置文件-->
+<script src="annotation-zving/customizeAnnotation.js"></script>
+<!-- 批注js文件-->
+<script src="annotation-zving/annotation.js"></script>
+<!-- 实例化编辑器 -->
+<script type="text/javascript">
+    // 1、实例化编辑器
+    window.UEDITOR_HOME_URL = "/ueditor-1.4.3.3/_src/aaaaa";
+    var ue = UE.getEditor('container',{
+        initialFrameWidth:700,
+        autoHeightEnabled :true,
+        initialContent:`<span style="font-size: 26px;">心情日记</span> <br> <br><span style="font-size:12px;color:#999;">写于XXX咖啡馆 </span> <br><span style="font-size:16px;line-height:30px;"> 第一次来到大峡谷，这里真的好美阿。    </span> <br> <br><span style="font-size:16px;line-height:30px;">在辽阔幽静的山谷深处，感受到了无法言说的宁静。天苍苍之下印证了我们的渺小，让我们流浪成片片白云，或是一只只欢快的羊儿，亦或是一株株坚韧的小草。</span> <br>`
+    });
+    // 2、设置和读取编辑器的内容
+    // var ue2= UE.getContent();
+    // ue2.ready(function(){
+    //     ue2.setContent('hello');
+    //     let html = ue2.getContent();
+    //     console.log('html',html);
+    //     let txt = ue2.getContentTxt();
+    //     console.log('txt',txt)
+    // })
+</script>
+
+<script>
+    // let iframe = document.getElementById('edui1_iframeholder');
+    // iframe.onmouseup =  function(e){
+    //     // alert(222);
+    //     console.log(e);
+    //     let offsetTop = e.layerY;
+    //     var txt;
+    //     if(document.selection){
+    //         txt = document.selection.createRange().text
+    //     }else{
+    //         txt = window.getSelection()+'';
+    //     }
+    //     console.log('document.selection',document.selection);
+    //     if(txt){
+    //         $('.tx-add-btn').removeClass('none').css('top',offsetTop-10);
+    //         // $('.tx-add-btn').css('top',offsetTop-10);
+    //         // alert(txt)
+    //     }else{
+    //         $('.tx-add-btn').addClass('none');
+    //     }
+    // };
+    //
+    // $(function () {
+    //     $('#edui1_iframeholder').click(function (e) {
+    //         alert(111)
+    //     })
+    // })
+
+    window.onload = function(){
+        if (document.activeElement) {
+            document.getElementById('ueditor_0').addEventListener('click',function (e) {
+                alert(111)
+            })
+        }
+
+
+    }
+
+
+
+</script>
+
+</html>

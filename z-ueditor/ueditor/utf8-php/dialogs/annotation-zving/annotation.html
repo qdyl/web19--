@@ -1,0 +1,188 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <title>ueditor demo</title>
+    <link rel="stylesheet" href="bootstrap.css">
+    <link rel="stylesheet" href="annotation.css">
+    <style>
+      /*  #container{
+            width:800px;
+        }*/
+    </style>
+</head>
+<body>
+
+<!-- 加载编辑器的容器 -->
+<section class="container section-box">
+    <div class="row">
+        <!-- 正文main -->
+        <script id="container" class="main-box col-xs-8 box-shadow-gray bg-gray min-height800"></script>
+        <!-- 右标注 -->
+        <aside class="right-aside col-xs-3 ">
+            <!-- 添加标注-->
+            <div class="tx-entrance-wrap">
+                <ul class="tx-number-btn none">
+                    <li class="number-btn"></li>
+                </ul>
+                <div class="tx-add-btn none"></div>
+            </div>
+            <!-- 标注box:总 -->
+            <ol class="all-lists">
+                <li class="inner-lists">
+                    <div class="inner-lists-box">
+                        <!-- 清空评论-->
+                        <div class="empty-sign-items none"><span class="empty-span"><i class="empty-icon"></i>清除评论</span></div>
+                        <!-- inner聊表的评论-->
+                        <ul class='sign-items sign-mask'>
+                            <li class="sign-item">
+                                <div class="sign-content-box">
+                                    <div class="sign-content-header clearfix">
+                                        <div class="user-img pull-left"><img src="images/user-img.png" alt=""><span class="user-name">YQ</span></div>
+                                        <div class="time-or-operate pull-right">
+                                            <div class="publish-time ">12-12 &nbsp;17:23</div>
+                                            <div class="editor-operate none"><span class="editor">编辑</span> &nbsp;<span class="delete">删除</span></div>
+                                        </div>
+                                    </div>
+                                    <div class="sign-content-body">
+                                        <div class="content-show" >22222</div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="sign-item ">
+                                <div class="sign-content-box">
+                                    <div class="sign-content-header clearfix">
+                                        <div class="user-img pull-left"><img src="images/user-img.png" alt=""><span class="user-name">YQ</span></div>
+                                        <div class="time-or-operate pull-right">
+                                            <div class="publish-time ">12-12 &nbsp;17:23</div>
+                                            <div class="editor-operate none"><span class="editor">编辑</span> &nbsp;<span class="delete">删除</span></div>
+                                        </div>
+                                    </div>
+                                    <div class="sign-content-body">
+                                        <div class="content-show" >22222</div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <!-- 增加评注-->
+                        <div class="add-to-comment clearfix none">
+                            <textarea class="add-textarea" name="1" id="1" cols="20" rows="2" placeholder="添加批注"></textarea>
+                            <div class="comfirm-or-cancel">
+                                <button class="cancel">取消</button>
+                                <button class="comfirm">确认</button>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="inner-lists">
+                    <div class="inner-lists-box">
+                        <div class="empty-sign-items none"><span class="empty-span"><i class="empty-icon"></i>清除评论</span></div>
+                        <ul class='sign-items sign-mask'>
+                            <li class="sign-item">
+                                <div class="sign-content-box">
+                                    <div class="sign-content-header clearfix">
+                                        <div class="user-img pull-left"><img src="images/user-img.png" alt=""><span class="user-name">YQ</span></div>
+                                        <div class="time-or-operate pull-right">
+                                            <div class="publish-time ">12-12 &nbsp;17:23</div>
+                                            <div class="editor-operate none"><span class="editor">编辑</span> &nbsp;<span class="delete">删除</span></div>
+                                        </div>
+                                    </div>
+                                    <div class="sign-content-body">
+                                        <div class="content-show" ;>22222</div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="sign-item">
+                                <div class="sign-content-box">
+                                    <div class="sign-content-header clearfix">
+                                        <div class="user-img pull-left"><img src="images/user-img.png" alt=""><span class="user-name">YQ</span></div>
+                                        <div class="time-or-operate pull-right">
+                                            <div class="publish-time ">12-12 &nbsp;17:23</div>
+                                            <div class="editor-operate none"><span class="editor">编辑</span> &nbsp;<span class="delete">删除</span></div>
+                                        </div>
+                                    </div>
+                                    <div class="sign-content-body">
+                                        <div class="content-show" ;>22222</div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+            </ol>
+        </aside>
+    </div>
+</section>
+
+
+</body>
+<script src="jquery-3.3.1.min.js"></script>
+
+<!-- 配置文件、编辑器源码文件 -->
+<script type="text/javascript" src="../../ueditor.config.js"></script>
+<script type="text/javascript" src="../../ueditor.all.js"></script>
+<!-- 配置文件-->
+<script src="customizeAnnotation.js"></script>
+<!-- 实例化编辑器 -->
+<script type="text/javascript">
+    // 1、实例化编辑器
+    var ue = UE.getEditor('container',{
+        initialFrameWidth:700,
+        autoHeightEnabled :true,
+        initialContent:`<span style="font-size: 26px;">心情日记</span> <br> <br><span style="font-size:12px;color:#999;">写于XXX咖啡馆 </span> <br><span style="font-size:16px;line-height:30px;"> 第一次来到大峡谷，这里真的好美阿。    </span> <br> <br><span style="font-size:16px;line-height:30px;">在辽阔幽静的山谷深处，感受到了无法言说的宁静。天苍苍之下印证了我们的渺小，让我们流浪成片片白云，或是一只只欢快的羊儿，亦或是一株株坚韧的小草。</span> <br>`
+    });
+    // 2、设置和读取编辑器的内容
+    // var ue2= UE.getContent();
+    // ue2.ready(function(){
+    //     ue2.setContent('hello');
+    //     let html = ue2.getContent();
+    //     console.log('html',html);
+    //     let txt = ue2.getContentTxt();
+    //     console.log('txt',txt)
+    // })
+</script>
+<script src="annotation.js"></script>
+<script>
+    // let iframe = document.getElementById('edui1_iframeholder');
+    // iframe.onmouseup =  function(e){
+    //     // alert(222);
+    //     console.log(e);
+    //     let offsetTop = e.layerY;
+    //     var txt;
+    //     if(document.selection){
+    //         txt = document.selection.createRange().text
+    //     }else{
+    //         txt = window.getSelection()+'';
+    //     }
+    //     console.log('document.selection',document.selection);
+    //     if(txt){
+    //         $('.tx-add-btn').removeClass('none').css('top',offsetTop-10);
+    //         // $('.tx-add-btn').css('top',offsetTop-10);
+    //         // alert(txt)
+    //     }else{
+    //         $('.tx-add-btn').addClass('none');
+    //     }
+    // };
+    //
+    // $(function () {
+    //     $('#edui1_iframeholder').click(function (e) {
+    //         alert(111)
+    //     })
+    // })
+
+    window.onload = function(){
+        if (document.activeElement) {
+            document.getElementById('ueditor_0').addEventListener('click',function (e) {
+                alert(111)
+            })
+        }
+
+
+    }
+
+
+
+</script>
+
+</html>
