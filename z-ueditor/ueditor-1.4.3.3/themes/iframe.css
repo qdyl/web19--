@@ -4,6 +4,9 @@
 *::-webkit-selection {background:#eee;color:#3d2f2e;}
 
 
-span.hover-hightbg:hover{
+/*span.hover-hightbg:hover{
+    background-color: #ffe168!important;
+}*/
+span.hover-bg{
     background-color: #ffe168!important;
 }

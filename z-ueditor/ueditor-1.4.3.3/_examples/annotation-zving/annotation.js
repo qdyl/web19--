@@ -117,7 +117,7 @@
         if($(ele2).attr('class') === 'inner-lists-box-mask'){
             $(ele2).hide();
             $(ele2).parent().find('.inner-lists-box').addClass('inner-lists-active');
-            $(ele2).parent().find('.sign-item').addClass('sign-item-hover');
+            //$(ele2).parent().find('.sign-item').addClass('sign-item-hover');
             $(ele2).parent().find('.empty-sign-items').removeClass('none');
             $(ele2).parent().find('.add-to-comment').removeClass('none');
             $(ele2).parent().find('.add-textarea').focus();
@@ -142,11 +142,11 @@
     });
 
     // 3、放在单个评注上显示背景色,以及显示'删除、编辑',隐藏'时间'---事件委托
-    $('.all-lists').hover(
+/*    $('.all-lists').hover(
         function(e){
             e.stopPropagation();
             let ele3 = e.target;
-            // 显示：‘编辑’、‘删除’
+            // 3.1、显示：‘编辑’、‘删除’
             if($(ele3).attr('class') === 'sign-item'){
                 console.log(11);
                 $(ele3).addClass('sign-item-hover');
@@ -154,12 +154,17 @@
         },function(e){
             e.stopPropagation();
             let ele3 = e.target;
-            // 显示：‘编辑’、‘删除’
+            // 3.1、显示：‘编辑’、‘删除’
             if($(ele3).attr('class') === 'sign-item'){
                 console.log(22);
                 $(this).removeClass('sign-item-hover');
             }
-        });
+        });*/
+    // 3、简写
+    $('.all-lists').on(' mouseleave mouseenter','.sign-item',function(e){
+        e.stopPropagation();
+        $(this).toggleClass('sign-item-hover')
+    });
 
     // 4、函数：将光标定位到最后
     function _set_focus(el) {
@@ -181,7 +186,7 @@
         }
     })
 
-// 6、公用添加评论-取消|确认
+    // 6、公用添加评论-取消|确认
     $('.com-add-to-comment').click(function (e) {
         let ele = e.target;
         if($(ele).attr('class')===  'com-cancel'){
@@ -221,7 +226,6 @@
             // 2.3、设置选中文本高亮：（鼠标放上去高亮）
             let node1= UE.getEditor('container').selection.getStartElementPath();
             console.log('----node1--',node1);
-
             // 2.4、遍历node1节点，给span节点添加class、以及id
             let annotation_id = $('.inner-lists:last-child').attr('id');
             let index = parseInt(annotation_id.charAt(annotation_id.length-1));
@@ -242,18 +246,26 @@
         }
     }
 
+    // 8、数遍放置在右边的批注内容上，左边的内容高亮
+    $('.all-lists').on('mouseenter mouseleave','.inner-lists-box-mask',function(){
+        let id_index = $(this).parent().attr('id');
+        // console.log('id_index----',id_index);
+        $('#ueditor_0').contents().find(`#${id_index}`).toggleClass('hover-bg');
+    });
+
 }
 
 // 测试
 $('.right-aside').click(function (e) {
-    console.log(111111+'测试');
+    //console.log(111111+'测试');
     // 测试
     // 测试
-    $('.hover-hightbg').css('font-size','50px');
+    // $('.hover-hightbg').css('font-size','50px');
     //$('.hover-hightbg').css('color','blue')
+    // document.getNodeById('annotation-zv-2').setAttribute('style','font-size:50px!important')
 
-    // let node1= UE.getEditor('container').selection.getStartElementPath();
-    // node1[0].setAttribute('style','font-size:50px!important')
+   /* let node1= UE.getEditor('container').selection.getStartElementPath();
+    node1[0].setAttribute('style','font-size:50px!important')*/
 })
 
 

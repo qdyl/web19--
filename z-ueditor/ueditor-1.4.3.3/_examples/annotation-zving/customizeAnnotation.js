@@ -32,13 +32,14 @@ UE.registerUI('annotation',function(editor,uiName){
             }
 
             //editor.execCommand(uiName);
+
         }
     });
 
     //当点到编辑内容上时，按钮要做的状态反射
     editor.addListener('selectionchange', function () {
+
         var state = editor.queryCommandState(uiName);
-        //alert('---扩展批注---');
         if (state === -1) {
             // -1 当前命令不可用
             // 0 当前命令可用
@@ -48,8 +49,13 @@ UE.registerUI('annotation',function(editor,uiName){
         } else {
             btn.setDisabled(false);
             btn.setChecked(state);
-            $('.tx-add-btn').removeClass('none');
+            // $('.tx-add-btn').removeClass('none');// 添加批注的 + 符号，暂时不要了
             console.log('点击了')
+            // 测试
+            // let query1 = UE.getEditor('container').queryCommandValue('backcolor');
+            // console.log('---查询选区----',query1)
+            //$('#annotation-zv-2').css('font-size','50px');
+
         }
     });
 
