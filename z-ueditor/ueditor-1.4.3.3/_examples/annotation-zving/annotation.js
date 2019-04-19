@@ -117,7 +117,6 @@
         if($(ele2).attr('class') === 'inner-lists-box-mask'){
             $(ele2).hide();
             $(ele2).parent().find('.inner-lists-box').addClass('inner-lists-active');
-            //$(ele2).parent().find('.sign-item').addClass('sign-item-hover');
             $(ele2).parent().find('.empty-sign-items').removeClass('none');
             $(ele2).parent().find('.add-to-comment').removeClass('none');
             $(ele2).parent().find('.add-textarea').focus();
@@ -142,24 +141,6 @@
     });
 
     // 3、放在单个评注上显示背景色,以及显示'删除、编辑',隐藏'时间'---事件委托
-/*    $('.all-lists').hover(
-        function(e){
-            e.stopPropagation();
-            let ele3 = e.target;
-            // 3.1、显示：‘编辑’、‘删除’
-            if($(ele3).attr('class') === 'sign-item'){
-                console.log(11);
-                $(ele3).addClass('sign-item-hover');
-            }
-        },function(e){
-            e.stopPropagation();
-            let ele3 = e.target;
-            // 3.1、显示：‘编辑’、‘删除’
-            if($(ele3).attr('class') === 'sign-item'){
-                console.log(22);
-                $(this).removeClass('sign-item-hover');
-            }
-        });*/
     // 3、简写
     $('.all-lists').on(' mouseleave mouseenter','.sign-item',function(e){
         e.stopPropagation();
