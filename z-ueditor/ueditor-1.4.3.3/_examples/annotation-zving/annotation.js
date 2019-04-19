@@ -1,48 +1,48 @@
 
 {
     // 0、初始化批注内容
-// 原始数据、待添加的数据
+    // 原始数据、待添加的数据
     let origin_datas = [
-        {
-            "id": 'annotation-zv-',
-            // "target_id": 70248256,
-            // "target_guid": "99abc979a24d4a7b",
-            // "user_id": 18674551,
-            "is_delete": 0,
-            "created_at": "19-03-21 10:47",
-            "updated_at": "19-03-21 10:47",
-            // "comment_guid": "2YAK5b6TRXXnOyQP",
-            // "target_type": 1,
-            "content": "测试测试批注内容1",
-            // "selection_title": "",
-            // "selection_guid": "comment-0ctAP3Kl2HKf6Mpd",
-            // "like": 0,
-            // "isLike": 0,
-            // "lastLike": null,
-            // "targetId": 70248256,
-            // "targetGuid": "99abc979a24d4a7b",
-            // "userId": 18674551,
-            // "isDelete": 0,
-            // "createdAt": "2019-03-21T10:47:44Z",
-            // "updatedAt": "2019-03-21T10:47:44Z",
-            // "commentGuid": "2YAK5b6TRXXnOyQP",
-            // "targetType": 1,
-            // "selectionTitle": "",
-            // "selectionGuid": "comment-0ctAP3Kl2HKf6Mpd",
-            // "User": {
-            //     "id": 18674551,
-            //     "avatar": "https://assets-cdn.shimo.im/static/unmd5/default-avatar-moke.2.png",
-            //     "name": "abeet"
-            // },
-            // "hasRead": true
-        },
-        {
-            "id": 'annotation-zv-',
-            "is_delete": 0,
-            "created_at": "2019-03-21 10:47",
-            "updated_at": "2019-03-21 10:47",
-            "content": "测试测试批注内容2",
-        },
+        // {
+        //     "id": 'annotation-zv-',
+        //     // "target_id": 70248256,
+        //     // "target_guid": "99abc979a24d4a7b",
+        //     // "user_id": 18674551,
+        //     "is_delete": 0,
+        //     "created_at": "19-03-21 10:47",
+        //     "updated_at": "19-03-21 10:47",
+        //     // "comment_guid": "2YAK5b6TRXXnOyQP",
+        //     // "target_type": 1,
+        //     "content": "测试测试批注内容1",
+        //     // "selection_title": "",
+        //     // "selection_guid": "comment-0ctAP3Kl2HKf6Mpd",
+        //     // "like": 0,
+        //     // "isLike": 0,
+        //     // "lastLike": null,
+        //     // "targetId": 70248256,
+        //     // "targetGuid": "99abc979a24d4a7b",
+        //     // "userId": 18674551,
+        //     // "isDelete": 0,
+        //     // "createdAt": "2019-03-21T10:47:44Z",
+        //     // "updatedAt": "2019-03-21T10:47:44Z",
+        //     // "commentGuid": "2YAK5b6TRXXnOyQP",
+        //     // "targetType": 1,
+        //     // "selectionTitle": "",
+        //     // "selectionGuid": "comment-0ctAP3Kl2HKf6Mpd",
+        //     // "User": {
+        //     //     "id": 18674551,
+        //     //     "avatar": "https://assets-cdn.shimo.im/static/unmd5/default-avatar-moke.2.png",
+        //     //     "name": "abeet"
+        //     // },
+        //     // "hasRead": true
+        // },
+        // {
+        //     "id": 'annotation-zv-',
+        //     "is_delete": 0,
+        //     "created_at": "2019-03-21 10:47",
+        //     "updated_at": "2019-03-21 10:47",
+        //     "content": "测试测试批注内容2",
+        // },
     ];
     let add_datas= {
         "id": 'annotation-zv-',
@@ -51,13 +51,15 @@
         "updated_at": "2019-03-21-10:47:44",
         "content": "待添加的数据",
     };
+    let copy_datas = []
 
     function init_annotation(){
+        $('.all-lists').html('');
         for(let i=0;i<origin_datas.length;i++){
             let html = `<li id="${origin_datas[i].id+i}" class="inner-lists">
                     <div class="inner-lists-box">
                         <!-- 清空评论-->
-                        <div class="empty-sign-items none"><span class="empty-span"><i class="empty-icon"></i>清除评论</span></div>
+                       <!-- <div class="empty-sign-items none"><span class="empty-span"><i class="empty-icon"></i>清除评论</span></div>-->
                         <!-- inner列表的评论-->
                         <ul class="sign-items sign-mask">
                             <li class="sign-item">
@@ -76,13 +78,13 @@
                             </li>
                         </ul>
                         <!-- 增加评注-->
-                        <div class="add-to-comment clearfix none">
+                       <!-- <div class="add-to-comment clearfix none">
                             <textarea class="add-textarea" name="1" id="1" cols="20" rows="2" placeholder="添加批注"></textarea>
                             <div class="comfirm-or-cancel">
                                 <button class="cancel">取消</button>
                                 <button class="comfirm">确认</button>
                             </div>
-                        </div>
+                        </div>-->
                     </div>
                     <!-- 遮罩层-->
                      <div class="inner-lists-box-mask"></div>
@@ -106,6 +108,8 @@
         // $('.com-add-to-comment').addClass('none');
         // 1.6、复原遮罩层显示
         $('.inner-lists-box-mask').show();
+        storing_data();
+        console.log('origin_datas---',origin_datas)
 
     });
 
@@ -123,11 +127,23 @@
         }
         // 2.1、二次编辑批注内容
         // let eledom = e.target;
+        let parent4 = $(ele2).parent().parent().parent().parent();
         if($(ele2).attr('class') === 'editor'){
-            let $foucus_el = $(ele2).parent().parent().parent().parent().find('.content-show');
+            // 设置可以编辑状态
+            let $foucus_el = parent4.find('.content-show');
             $foucus_el.attr('contenteditable',true);
             _set_focus($foucus_el[0]);
         };
+        // 删除评论，并初始化,，以及删除左边编辑区选中的文本
+        if($(ele2).attr('class') === 'delete'){
+            let _index_id = parent4.parent().parent().parent().parent().attr('id');
+            console.log('_index_id---',_index_id)
+            let _index = parseInt(_index_id.charAt(_index_id.length-1));
+            origin_datas.splice(_index,1);
+            init_annotation();
+            // 响应左边编辑区
+            $('#ueditor_0').contents().find(`#${_index_id}`).removeClass('hover-hightbg').attr('id','').css('background-color','transparent');
+        }
         // 2.2、追加评论---确认
         if($(ele2).attr('class') === 'comfirm'){
             /*  let add_text = $('.add-textarea').val();
@@ -165,7 +181,7 @@
         }else{
             $('.com-comfirm-or-cancel').hide()
         }
-    })
+    });
 
     // 6、公用添加评论-取消|确认
     $('.com-add-to-comment').click(function (e) {
@@ -184,10 +200,11 @@
             let created_at_time = add_date.replace(/\//g,'-').match(/^\d{4}-\d{1,2}-\d{1,2}\s+\d{2}:\d{2}/g);
             origin_datas.push({
                 'id':`annotation-zv-`,
+                'is_delete':0,
+                'created_at': created_at_time[0],
                 'content':value1,
-                'created_at': created_at_time
             });
-            $('.all-lists').html('');
+            //$('.all-lists').html('');
             init_annotation();
             // 5.2、置空输入框，并隐藏它
             $('.com-add-textarea').val('');
@@ -206,7 +223,7 @@
             // UE.getEditor('container').execCommand( 'inserthtml', 'class="hover"');
             // 2.3、设置选中文本高亮：（鼠标放上去高亮）
             let node1= UE.getEditor('container').selection.getStartElementPath();
-            console.log('----node1--',node1);
+            //console.log('----node1--',node1);
             // 2.4、遍历node1节点，给span节点添加class、以及id
             let annotation_id = $('.inner-lists:last-child').attr('id');
             let index = parseInt(annotation_id.charAt(annotation_id.length-1));
@@ -218,7 +235,7 @@
                     node1[n].setAttribute('id',newId);
                 }
             }
-            console.log(' node1[0].tagName.tolowercase()', node1[0].tagName);
+            //console.log(' node1[0].tagName.tolowercase()', node1[0].tagName);
 
             // 测试
             //node1[0].setAttribute('style','font-size:50px!important')
@@ -233,6 +250,18 @@
         // console.log('id_index----',id_index);
         $('#ueditor_0').contents().find(`#${id_index}`).toggleClass('hover-bg');
     });
+
+    // 9、存储评论的内容：（内容、是否删除、）
+    function storing_data(){
+        $('.inner-lists').each(function (index,ele) {
+             // origin_datas[index].id = $(ele).attr('id')
+        });
+        $('.content-show').each(function (index,ele) {
+            origin_datas[index].content = $(ele).html()
+        })
+    }
+    //storing_data();
+
 
 }
 
