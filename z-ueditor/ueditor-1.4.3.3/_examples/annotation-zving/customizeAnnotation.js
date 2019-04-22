@@ -20,6 +20,15 @@ UE.registerUI('annotation',function(editor,uiName){
             // 1、获取当前光标选中的文本
             let range = UE.getEditor('container').selection.getRange();
             range.select();
+            //
+            editor.addListener( 'ready', function( editor ) {
+                //let range2 = editor.selection.getRange();
+                range.traversal( function ( node ) {
+                    console.log('node22--------------',node);
+                });
+            } );
+
+            //
             let txt = UE.getEditor('container').selection.getText();
             // 2、判断如果当前没有选中文本,
             if(txt !== ''){
@@ -50,7 +59,7 @@ UE.registerUI('annotation',function(editor,uiName){
             btn.setDisabled(false);
             btn.setChecked(state);
             // $('.tx-add-btn').removeClass('none');// 添加批注的 + 符号，暂时不要了
-            console.log('点击了')
+            //console.log('点击了')
             // 测试
             // let query1 = UE.getEditor('container').queryCommandValue('backcolor');
             // console.log('---查询选区----',query1)

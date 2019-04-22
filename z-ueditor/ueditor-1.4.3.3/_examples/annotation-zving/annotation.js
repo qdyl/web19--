@@ -95,7 +95,7 @@
     init_annotation();
 
     // 1、显示和影藏:'清除评论'
-    $(document).click(function (e) {
+    $(document).click(debounce(function (e) {
         // 1.1、隐藏：'清空批注'
         $(this).find('.empty-sign-items').addClass('none');
         // 1.2、去掉标注位的class
@@ -108,10 +108,10 @@
         // $('.com-add-to-comment').addClass('none');
         // 1.6、复原遮罩层显示
         $('.inner-lists-box-mask').show();
+        // 1.7、获取批注数据
         storing_data();
-        console.log('origin_datas---',origin_datas)
-
-    });
+        // console.log('origin_datas---',origin_datas)
+    },500));
 
     // 2、点击单个评注的时候，增加类名:inner-lists-active
     $('.all-lists').click(function (e) {
@@ -126,18 +126,16 @@
             $(ele2).parent().find('.add-textarea').focus();
         }
         // 2.1、二次编辑批注内容
-        // let eledom = e.target;
-        let parent4 = $(ele2).parent().parent().parent().parent();
         if($(ele2).attr('class') === 'editor'){
             // 设置可以编辑状态
-            let $foucus_el = parent4.find('.content-show');
+            let $foucus_el = $(ele2).closest('.sign-content-box').find('.content-show');
             $foucus_el.attr('contenteditable',true);
             _set_focus($foucus_el[0]);
         };
         // 删除评论，并初始化,，以及删除左边编辑区选中的文本
         if($(ele2).attr('class') === 'delete'){
-            let _index_id = parent4.parent().parent().parent().parent().attr('id');
-            console.log('_index_id---',_index_id)
+            let _index_id = $(ele2).closest('.inner-lists').attr('id');
+            //console.log('_index_id---',_index_id)
             let _index = parseInt(_index_id.charAt(_index_id.length-1));
             origin_datas.splice(_index,1);
             init_annotation();
@@ -174,14 +172,14 @@
         sel.addRange(range);
     }
 
-    // 5、公用添加评论，当输入框的内容不为空的时候，显示'取消'、'确认'
-    $('.com-add-textarea').on('input',function (e) {
+    // 5、公用添加评论，当输入框的内容不为空的时候，显示'取消'、'确认'--- 采用函数防抖
+    $('.com-add-textarea').on('input',debounce(function (e) {
         if($('.com-add-textarea').val() !== ''){
             $('.com-comfirm-or-cancel').show()
         }else{
             $('.com-comfirm-or-cancel').hide()
         }
-    });
+    },400));
 
     // 6、公用添加评论-取消|确认
     $('.com-add-to-comment').click(function (e) {
@@ -211,8 +209,6 @@
             $('.com-add-to-comment').addClass('none');
             //设置选中文本的样式、以及属性
             _setting_choosed_span();
-
-
         }
         //flag1 = false;// 要注释掉
     });
@@ -220,27 +216,37 @@
     // 7、函数：设置选中文本的样式、以及属性
     function _setting_choosed_span(){
         if(flag1){
-            // UE.getEditor('container').execCommand( 'inserthtml', 'class="hover"');
-            // 2.3、设置选中文本高亮：（鼠标放上去高亮）
-            let node1= UE.getEditor('container').selection.getStartElementPath();
-            //console.log('----node1--',node1);
             // 2.4、遍历node1节点，给span节点添加class、以及id
             let annotation_id = $('.inner-lists:last-child').attr('id');
             let index = parseInt(annotation_id.charAt(annotation_id.length-1));
             let newId = 'annotation-zv-'+index;
-            for(let n=0;n<node1.length;n++){
-                // console.log('node1[n].tagName---',node1[n].tagName);
-                if(node1[n].tagName ==='SPAN'){
-                    node1[n].setAttribute('class','hover-hightbg');
-                    node1[n].setAttribute('id',newId);
+            // 代码...
+
+            let range = UE.getEditor('container').selection.getRange();
+            console.log('range----------1',range)
+            console.log('cloneRange()----------2',range.cloneRange())
+            console.log('range.cloneContents()------3',range.cloneContents());
+            console.log('range.startContainer------4',range.startContainer);
+            console.log('range.endContainer------4',range.endContainer);
+            range.traversal( function ( node ) {
+                // let node_bg = node.style.backgroundColor;
+                if ( node.nodeName === 'SPAN'  ) {
+                    node.setAttribute('id',newId);
+                    node.className = `hover-hightbg + ${newId}`;
                 }
-            }
+            });
+            //
+
+            // 2.3、设置选中文本高亮：（鼠标放上去高亮）
+            // let node1= UE.getEditor('container').selection.getStartElementPath();
+            // for(let n=0;n<node1.length;n++){
+            //     // console.log('node1[n].tagName---',node1[n].tagName);
+            //     if(node1[n].tagName ==='SPAN'){
+            //         node1[n].setAttribute('class','hover-hightbg');
+            //         node1[n].setAttribute('id',newId);
+            //     }
+            // }
             //console.log(' node1[0].tagName.tolowercase()', node1[0].tagName);
-
-            // 测试
-            //node1[0].setAttribute('style','font-size:50px!important')
-
-
         }
     }
 
@@ -260,9 +266,18 @@
             origin_datas[index].content = $(ele).html()
         })
     }
+
+    // 10、防抖函数
+    function debounce(fn,wait){
+        let timeout = null;
+        return function(){
+            if(timeout !== null) {
+                clearTimeout(timeout);
+            }
+            timeout = setTimeout(fn,wait);
+        }
+    }
     //storing_data();
-
-
 }
 
 // 测试
@@ -273,7 +288,6 @@ $('.right-aside').click(function (e) {
     // $('.hover-hightbg').css('font-size','50px');
     //$('.hover-hightbg').css('color','blue')
     // document.getNodeById('annotation-zv-2').setAttribute('style','font-size:50px!important')
-
    /* let node1= UE.getEditor('container').selection.getStartElementPath();
     node1[0].setAttribute('style','font-size:50px!important')*/
 })
