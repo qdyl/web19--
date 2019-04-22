@@ -20,20 +20,13 @@ UE.registerUI('annotation',function(editor,uiName){
             // 1、获取当前光标选中的文本
             let range = UE.getEditor('container').selection.getRange();
             range.select();
-            //
-            editor.addListener( 'ready', function( editor ) {
-                //let range2 = editor.selection.getRange();
-                range.traversal( function ( node ) {
-                    console.log('node22--------------',node);
-                });
-            } );
 
-            //
             let txt = UE.getEditor('container').selection.getText();
             // 2、判断如果当前没有选中文本,
             if(txt !== ''){
                 // 2.1、修改文字背景颜色
                 UE.getEditor('container').execCommand('backcolor', "#eee");
+                // range.applyInlineStyle('span',{'style':'background-color:#eee'});
                 // 2.2、显示公用的‘添加批注’控件
                 $('.com-add-to-comment').removeClass('none').find('.com-add-textarea').focus();
             }else{

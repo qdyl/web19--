@@ -179,7 +179,7 @@
         }else{
             $('.com-comfirm-or-cancel').hide()
         }
-    },400));
+    },300));
 
     // 6、公用添加评论-取消|确认
     $('.com-add-to-comment').click(function (e) {
@@ -228,24 +228,24 @@
             console.log('range.cloneContents()------3',range.cloneContents());
             console.log('range.startContainer------4',range.startContainer);
             console.log('range.endContainer------4',range.endContainer);
-            range.traversal( function ( node ) {
-                // let node_bg = node.style.backgroundColor;
-                if ( node.nodeName === 'SPAN'  ) {
-                    node.setAttribute('id',newId);
-                    node.className = `hover-hightbg + ${newId}`;
-                }
-            });
-            //
+            // range.traversal( function ( node ) {
+            //     // let node_bg = node.style.backgroundColor;
+            //     if ( node.nodeName === 'SPAN'  ) {
+            //         // node.setAttribute('id',newId);
+            //         node.className = `hover-hightbg + ${newId}`;
+            //     }
+            // });
+
 
             // 2.3、设置选中文本高亮：（鼠标放上去高亮）
-            // let node1= UE.getEditor('container').selection.getStartElementPath();
-            // for(let n=0;n<node1.length;n++){
-            //     // console.log('node1[n].tagName---',node1[n].tagName);
-            //     if(node1[n].tagName ==='SPAN'){
-            //         node1[n].setAttribute('class','hover-hightbg');
-            //         node1[n].setAttribute('id',newId);
-            //     }
-            // }
+            let node1= UE.getEditor('container').selection.getStartElementPath();
+            for(let n=0;n<node1.length;n++){
+                // console.log('node1[n].tagName---',node1[n].tagName);
+                if(node1[n].tagName ==='SPAN' && node1[n].style.backgroundColor !== '' ){
+                    node1[n].setAttribute('class','hover-hightbg');
+                    node1[n].setAttribute('id',newId);
+                }
+            }
             //console.log(' node1[0].tagName.tolowercase()', node1[0].tagName);
         }
     }
