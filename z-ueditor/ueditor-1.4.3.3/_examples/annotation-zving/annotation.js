@@ -239,9 +239,11 @@
 
             // 2.3、设置选中文本高亮：（鼠标放上去高亮）
             let node1= UE.getEditor('container').selection.getStartElementPath();
+            console.log('node1---------666666',node1)
             for(let n=0;n<node1.length;n++){
                 // console.log('node1[n].tagName---',node1[n].tagName);
                 if(node1[n].tagName ==='SPAN' && node1[n].style.backgroundColor !== '' ){
+                    // alert(1111)
                     node1[n].setAttribute('class','hover-hightbg');
                     node1[n].setAttribute('id',newId);
                 }
