@@ -311,15 +311,26 @@ $(function () {
         let $iframe_body=$(document.getElementById("ueditor_0").contentWindow.document).find('body');
         function updateSvgPostion(){
             let toobarHeight = $('#edui1_toolbarbox').innerHeight();
+            let updeArrY2 = [];
             $iframe_body.find('.hover-hightbg').each(function (index,item) {
-                let ry1 = 175 + 85*index;
+                let _index = $(item).attr('id').charAt($(item).attr('id').length-1)
+                // let ry1 = 175 + 85*index;
                 let updateY2 =  $(item).offset().top + $(item).innerHeight() + toobarHeight;
-                console.log('updateY2--',updateY2);
-                $('.svg-box svg').eq(index).find('polyline').attr('points',`100,${ry1} 0,${updateY2}`)
+                updeArrY2[_index] = updateY2
+
+                // console.log('updateY2--',updateY2);
+                // $('.svg-box svg').eq(index).find('polyline').attr('points',`100,${ry1} 0,${updateY2}`)
             })
+            // console.log('updeArrY2---',updeArrY2)
+
+            for(let m=0;m<updeArrY2.length;m++){
+                let ry1 = 175 + 85*m;
+                $('.svg-box svg').eq(m).find('polyline').attr('points',`100,${ry1} 0,${updeArrY2[m]}`)
+            }
             // console.log($('.svg-box svg').eq().find('polyline').attr('points'))
         }
-        $iframe_body.on('input',debounce(updateSvgPostion,400))
+        $iframe_body.on('input',debounce(updateSvgPostion,0))
+
     }
 })
 
