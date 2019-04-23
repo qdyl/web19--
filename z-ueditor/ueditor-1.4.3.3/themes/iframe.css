@@ -3,10 +3,28 @@
 *::-moz-selection {background:#eee;color:#3d2f2e;}
 *::-webkit-selection {background:#eee;color:#3d2f2e;}
 
+* {
+    letter-spacing: 1px;
+}
 
-/*span.hover-hightbg:hover{
-    background-color: #ffe168!important;
-}*/
+svg{
+    width: 700px;
+    height: auto;
+    position: absolute;
+    top: 0;
+    z-index: -1;
+    stroke-width: .5;
+    stroke-dasharray: 1 4;
+    stroke: #666;
+}
+span.hover-hightbg{
+    position: relative;
+    border-left: 1px solid #c5c5c5!important;
+    border-right: 1px solid #c5c5c5!important;
+}
 span.hover-bg{
     background-color: #ffe168!important;
+}
+span.hover-bg svg{
+    stroke-dasharray: 0;
 }

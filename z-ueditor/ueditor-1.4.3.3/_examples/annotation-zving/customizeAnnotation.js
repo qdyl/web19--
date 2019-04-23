@@ -27,6 +27,7 @@ UE.registerUI('annotation',function(editor,uiName){
                 // 2.1、修改文字背景颜色
                 UE.getEditor('container').execCommand('backcolor', "#eee");
                 // range.applyInlineStyle('span',{'style':'background-color:#eee'});
+                // UE.dom.domUtils.setStyle(range.select(),'color','#eee');
                 // 2.2、显示公用的‘添加批注’控件
                 $('.com-add-to-comment').removeClass('none').find('.com-add-textarea').focus();
             }else{
@@ -52,11 +53,28 @@ UE.registerUI('annotation',function(editor,uiName){
             btn.setDisabled(false);
             btn.setChecked(state);
             // $('.tx-add-btn').removeClass('none');// 添加批注的 + 符号，暂时不要了
-            //console.log('点击了')
-            // 测试
             // let query1 = UE.getEditor('container').queryCommandValue('backcolor');
             // console.log('---查询选区----',query1)
             //$('#annotation-zv-2').css('font-size','50px');
+
+        }
+    });
+
+
+    //
+    //	编辑器内容发生改变时会触发该事件
+    editor.addListener('contentChange', function () {
+
+        var state = editor.queryCommandState(uiName);
+        if (state === -1) {
+            btn.setDisabled(true);
+            btn.setChecked(false);
+        } else {
+            btn.setDisabled(false);
+            btn.setChecked(state);
+            // 更新svg的位置信息
+            //updateSvgPostion();
+            //  console.log('编辑区域发生变化了')
 
         }
     });
@@ -67,5 +85,8 @@ UE.registerUI('annotation',function(editor,uiName){
 
 /*------添加的批注--------*/
 var flag1 = false; // 标志位
+
+
+
 
 

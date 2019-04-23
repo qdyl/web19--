@@ -1,5 +1,5 @@
 body{
-    background: #f8f8f8;
+    /*background: #f8f8f8;*/
     min-height: 800px;
 }
 
@@ -16,8 +16,9 @@ ol,ul,li{list-style:none;padding-left:0;}
     margin-top: 20px
 }
 .main-box{
+    width: 700px;
     position: relative;
-    box-shadow: 0px 1px 1px #c3c3c3;
+    /*box-shadow: 0px 1px 1px #c3c3c3;*/
     min-height: 800px;
     background: #fff;
 }
@@ -28,7 +29,17 @@ ol,ul,li{list-style:none;padding-left:0;}
     text-align: justify;
 }
 
+.svg-box{
+    position: relative;
+    width: 100px;
+    min-height:1000px ;
+}
+/* 右边*/
+.right-aside{
+    width: 300px;
+}
 /* 右侧：用户标注*/
+
 .all-lists{
 
     margin-top: 100px;
@@ -66,7 +77,7 @@ ol,ul,li{list-style:none;padding-left:0;}
 }
 .inner-lists{
     border: 1px solid #efefef;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     background: #fff;
 }
 .empty-sign-items{
@@ -166,6 +177,8 @@ ol,ul,li{list-style:none;padding-left:0;}
     margin-right: 10px;
 }
 .sign-content-body .content-show{
+    max-height: 55px;
+    overflow-y: auto;
 
 }
 
@@ -249,4 +262,23 @@ ol,ul,li{list-style:none;padding-left:0;}
     border: 1px solid #c3c8cc;
     background: #1ea8ff;
     color: #fff;
+}
+
+
+/* svg */
+.right-aside{
+    position: relative;
+}
+svg{
+    width: 100px;
+    height: 1000px;
+    position: absolute;
+    stroke-width: 0.5;
+    stroke-dasharray: 1 4;
+   /* stroke: #666;*/
+    stroke: #bbb;
+}
+svg.hover-svg{
+    stroke-dasharray: 0;
+    stroke: #666;
 }
