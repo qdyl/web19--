@@ -51,12 +51,12 @@ $(function () {
             "updated_at": "2019-03-21-10:47:44",
             "content": "待添加的数据",
         };
-        let copy_datas = []
+        let remark_datas = []
         // 批注初始化
         function init_annotation(){
             $('.all-lists').html('');
             for(let i=0;i<origin_datas.length;i++){
-                let html = `<li id="${origin_datas[i].id+i}" class="inner-lists">
+                let html = `<li id="${origin_datas[i].id}" class="inner-lists" data-index="${i}">
                     <div class="inner-lists-box">
                         <!-- 清空评论-->
                        <!-- <div class="empty-sign-items none"><span class="empty-span"><i class="empty-icon"></i>清除评论</span></div>-->
@@ -108,14 +108,12 @@ $(function () {
             $('.inner-lists-box-mask').show();
             // 1.6、获取批注数据
             storing_data();
-            // console.log('origin_datas---',origin_datas)
         },500));
 
         // 2、点击单个评注的时候，增加类名:inner-lists-active
         $('.all-lists').click(function (e) {
             e.stopPropagation();
             let ele2 = e.target;
-            // console.log($(ele2).attr('class'));
             if($(ele2).attr('class') === 'inner-lists-box-mask'){
                 $(ele2).hide();
                 $(ele2).parent().find('.inner-lists-box').addClass('inner-lists-active');
@@ -134,6 +132,11 @@ $(function () {
             // 删除批注、svg，并初始化,，左边编辑区选中的文本重置背景色
             if($(ele2).attr('class') === 'delete'){
                 delete_remark_svg(ele2);
+                // 收集svg的位置变更信息-y1-y2
+                collectLeftSvgPosition();
+                // 更新svg的位置
+                updateSvgPosition();
+                // collectRightSvgPosition();
             }
             // 2.2、追加评论---确认
             if($(ele2).attr('class') === 'comfirm'){
@@ -150,10 +153,12 @@ $(function () {
         // 3、删除批注、svg
         function delete_remark_svg(ele2){
             let _index_id = $(ele2).closest('.inner-lists').attr('id');
-            //console.log('_index_id---',_index_id)
             let _index = parseInt(_index_id.charAt(_index_id.length-1));
             origin_datas.splice(_index,1);
             init_annotation();
+            remark_datas[_index].is_delete = 1;
+            // storage_remark_info(remark_datas,_index,'delete',1);
+            console.log('---remark_datas----',remark_datas)
             // 删除右边的svg
             $('.svg-box').find(`#${_index_id}`).remove();
             // 左边编辑区:删除svg、重置背景色
@@ -185,7 +190,7 @@ $(function () {
             }else{
                 $('.com-comfirm-or-cancel').hide()
             }
-        },300));
+        },200));
 
         // 7、公用添加评论-取消|确认
         $('.com-add-to-comment').click(function (e) {
@@ -200,16 +205,8 @@ $(function () {
             // 确认—添加批注
             if($(ele).attr('class')===  'com-comfirm'){
                 flag1 = true;
-                // 5.1、更新批注数组（内容、时间、id）
-                let value1 = $('.com-add-textarea').val();
-                let add_date = new Date().toLocaleString('chinese',{hour12:false});
-                let created_at_time = add_date.replace(/\//g,'-').match(/^\d{4}-\d{1,2}-\d{1,2}\s+\d{2}:\d{2}/g);
-                origin_datas.push({
-                    'id':`annotation-zv-`,
-                    'is_delete':0,
-                    'created_at': created_at_time[0],
-                    'content':value1,
-                });
+                // 创建批注信息
+                create_remark_info();
                 //$('.all-lists').html('');
                 init_annotation();
                 // 5.2、置空输入框，并隐藏它
@@ -217,6 +214,9 @@ $(function () {
                 $('.com-add-to-comment').addClass('none');
                 //设置选中文本的样式、以及属性
                 _setting_choosed_span();
+
+                //
+
 
             }
             //flag1 = false;// 要注释掉
@@ -226,37 +226,29 @@ $(function () {
         function _setting_choosed_span(){
             if(flag1){
                 // 8.1、遍历node1节点，给span节点添加class、以及id
-                let annotation_id = $('.inner-lists:last-child').attr('id');
-                let index = parseInt(annotation_id.charAt(annotation_id.length-1));
-                let newId = 'annotation-zv-'+index;
+                // let annotation_id = $('.inner-lists:last-child').attr('id');
+                // let index = parseInt(annotation_id.charAt(annotation_id.length-1));
+                // let newId = 'annotation-zv-'+index;
+
+                let newId = $('.inner-lists:last-child').attr('id');
+                let data_index = $('.inner-lists:last-child').attr('data-index');
+                // let annotation_id = $('.inner-lists:last-child').attr('id');
+                // let index = parseInt(annotation_id.charAt(annotation_id.length-1));
+
+
                 // 代码...
-                let range = UE.getEditor('container').selection.getRange();
-                // console.log('range----------1',range);
-                // console.log('cloneRange()----------2',range.cloneRange());
-                // console.log('range.cloneContents()------3',range.cloneContents());
-                // console.log('range.startContainer------4',range.startContainer);
-                // console.log('range.endContainer------4',range.endContainer);
-                // range.traversal( function ( node ) {
-                //     if ( node.nodeName === 'SPAN'  ) {
-                //         // node.setAttribute('id',newId);
-                //         node.className = `hover-hightbg + ${newId}`;
-                //     }
-                // });
+                // let range = UE.getEditor('container').selection.getRange();
 
                 // 8.2、设置选中文本高亮：（鼠标放上去高亮）
                 let node1= UE.getEditor('container').selection.getStartElementPath();
-                // console.log('node1---------666666',node1.length)
                 for(let n=0;n<node1.length;n++){
-                    // console.log('node1[n].tagName---',node1[n].tagName);
                     if(node1[n].tagName ==='SPAN' && node1[n].style.backgroundColor !== '' ){
                         node1[n].setAttribute('class','hover-hightbg');
                         node1[n].setAttribute('id',newId);
                     }
                 }
-                // console.log(' node1[0].tagName', node1[0].tagName);  ||$ueditor_span.css('font-size')
-
                 // 首次创建svg
-                createSvg(index,newId);
+                createSvg(data_index,newId);
 
             }
         }
@@ -265,7 +257,6 @@ $(function () {
         $('.all-lists').on('mouseenter mouseleave','.inner-lists-box-mask',function(){
             let id_index = $(this).parent().attr('id');
             $(`svg#${id_index}`).toggleClass('hover-svg');
-            // console.log('id_index----',id_index);
             $('#ueditor_0').contents().find(`#${id_index}`).toggleClass('hover-bg');
         });
 
@@ -297,57 +288,103 @@ $(function () {
             // 12.1、在左边编辑区域中创建svg标签
             let $ueditor_span = $('#ueditor_0').contents().find(`#${newId}`);
             let ly1 = parseInt($ueditor_span.innerHeight());
-            // console.log('ly1---------------',ly1);
-            $('#ueditor_0').contents().find(`#${newId}`).append(`<svg><polyline points="0,${ly1} 700,${ly1}"  style="fill:none;"></polyline></svg>`);
+            $ueditor_span.append(`<svg><polyline points="0,${ly1} 700,${ly1}"  style="fill:none;"></polyline></svg>`);
             // 12.2、在右边创建svg
             let ry1 = 175 + 85*index,ry2;
             ry2 = $ueditor_span.offset().top + $ueditor_span.innerHeight()  +$('#edui1_toolbarbox').innerHeight();
             console.log('ry2---------------',ry2);
-            // y1 = $("li#annotation-zv-0")
             $('.svg-box').append(`<svg id='${newId}'><polyline points="100,${ry1} 0,${ry2}" style="fill:none;" /></svg>`);
         }
 
-        // 13、更新svg的位置信息
+        // 13、采集svg的y2的位置信息--(当编辑区域发生变化的时候)
         let $iframe_body=$(document.getElementById("ueditor_0").contentWindow.document).find('body');
-        function updateSvgPostion(){
-            let toobarHeight = $('#edui1_toolbarbox').innerHeight();
-            let updeArrY2 = [];
+        let toobarHeight = $('#edui1_toolbarbox').innerHeight();
+        let updeArrLeftY2 = [];
+        function collectLeftSvgPosition(){
+            // 采集y1的信息
+            collectRightSvgPosition()
+            // 采集y2的信息
             $iframe_body.find('.hover-hightbg').each(function (index,item) {
-                let _index = $(item).attr('id').charAt($(item).attr('id').length-1)
-                // let ry1 = 175 + 85*index;
-                let updateY2 =  $(item).offset().top + $(item).innerHeight() + toobarHeight;
-                updeArrY2[_index] = updateY2
+                let _index = $(item).attr('id');
+                console.log('---_index---采集的',_index);
+                let updeLeftY2 =  $(item).offset().top + $(item).innerHeight() + toobarHeight + 3;
+                updeArrLeftY2[_index] = updeLeftY2;
+                // console.log('---updeArrLeftY2---',updeArrLeftY2);
+                // console.log('---updeArrLeftY2[1111]---',updeArrLeftY2['annotation-zv-0'])
+                // console.log('---左边--updeArrLeftY2---',updeArrLeftY2)
+            });
+            // 更新svg的位置
+            updateSvgPosition();
 
-                // console.log('updateY2--',updateY2);
-                // $('.svg-box svg').eq(index).find('polyline').attr('points',`100,${ry1} 0,${updateY2}`)
-            })
-            // console.log('updeArrY2---',updeArrY2)
-
-            for(let m=0;m<updeArrY2.length;m++){
-                let ry1 = 175 + 85*m;
-                $('.svg-box svg').eq(m).find('polyline').attr('points',`100,${ry1} 0,${updeArrY2[m]}`)
-            }
-            // console.log($('.svg-box svg').eq().find('polyline').attr('points'))
+            // 设置y2
+            // for(let m=0;m<updeArrLeftY2.length;m++){
+            //     let hover_hightbg_m = $iframe_body.find('.hover-hightbg').eq(m);
+            //     let __index = hover_hightbg_m.attr('id').charAt(hover_hightbg_m.attr('id').length-1)||'';
+            //     console.log('--__index--',__index);
+            //     let ry1 = 175 + 85*m;
+            //     // $('.svg-box svg').eq(m).find('polyline').attr('points',`100,${ry1} 0,${updeArrLeftY2[__index]}`)
+            // }
+            // $('svg#annotation-zv-0')
         }
-        $iframe_body.on('input',debounce(updateSvgPostion,0))
+        $iframe_body.on('input',debounce(collectLeftSvgPosition,0));
+
+        // 14、标注信息存储
+        // function storage_remark_info(index,key,value){
+        //     remark_datas[index].key = value;
+        // }
+
+        // 采集svg的y1的位置信息
+        let updeArrrightY1 = [];
+        function collectRightSvgPosition() {
+            $('.inner-lists').each(function(index,item) {
+                let _index = $(item).attr('id');
+                // console.log('---_index---采集的',_index);
+                let upderightY1 =  175 + 85*index;
+                updeArrrightY1[_index] = upderightY1;
+                // console.log('---upderightY1---',upderightY1);
+                // console.log('---updeArrrightY1[1111]---',updeArrrightY1['annotation-zv-0'])
+                // console.log('---右边-updeArrrightY1---',updeArrrightY1)
+            })
+
+        }
+
+        // 15、创建批注信息
+        let num = 0;
+        function create_remark_info(){
+            // 5.1、更新批注数组（批注内容、时间、id）
+            let value1 = $('.com-add-textarea').val();
+            let add_date = new Date().toLocaleString('chinese',{hour12:false});
+            let created_at_time = add_date.replace(/\//g,'-').match(/^\d{4}-\d{1,2}-\d{1,2}\s+\d{2}:\d{2}/g);
+            // 被标注的内容
+            let range = UE.getEditor('container').selection.getRange();
+            range.select();
+            let noded_txt = UE.getEditor('container').selection.getText();
+
+            origin_datas.push({
+                'id':`annotation-zv-${num++}`,
+                'is_delete':0,
+                'created_at': created_at_time[0],
+                'content':value1,
+                'noded_text':noded_txt
+            });
+            remark_datas = origin_datas.concat();
+        }
+
+        // 16、更新svg的位置信息
+        function updateSvgPosition(){
+            // let leng = $('svg-box svg').length;
+            $('.svg-box svg').each(function (index,item) {
+                let svg_id = $(item).attr('id');
+                let newY2 = updeArrLeftY2[svg_id];
+                let newY1 = updeArrrightY1[svg_id];
+                console.log('--newY2--',newY2,'--newY1--',newY1)
+                $(item).find('polyline').attr('points',`100,${newY1} 0,${newY2}`)
+            })
+
+        }
 
     }
-})
+});
 
-
-
-
-
-// 测试
-$('.right-aside').click(function (e) {
-    //console.log(111111+'测试');
-    // 测试
-    // 测试
-    // $('.hover-hightbg').css('font-size','50px');
-    //$('.hover-hightbg').css('color','blue')
-    // document.getNodeById('annotation-zv-2').setAttribute('style','font-size:50px!important')
-   /* let node1= UE.getEditor('container').selection.getStartElementPath();
-    node1[0].setAttribute('style','font-size:50px!important')*/
-})
 
 

@@ -20,7 +20,6 @@ UE.registerUI('annotation',function(editor,uiName){
             // 1、获取当前光标选中的文本
             let range = UE.getEditor('container').selection.getRange();
             range.select();
-
             let txt = UE.getEditor('container').selection.getText();
             // 2、判断如果当前没有选中文本,
             if(txt !== ''){
